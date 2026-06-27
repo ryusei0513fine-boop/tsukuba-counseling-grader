@@ -1,0 +1,2176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>筑波大学大学院カウンセリング学位プログラム対策 - 10パターン自動採点Webシステム</title>
+  
+  <!-- Google Fonts: Outfit & Noto Sans JP -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Premium Pop & Light Design System */
+    :root {
+      --bg-gradient: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --text-main: #334155;
+      --text-muted: #64748b;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-gradient: linear-gradient(135deg, #6366f1, #4f46e5);
+      --secondary-gradient: linear-gradient(135deg, #ec4899, #f43f5e);
+      --accent-gradient: linear-gradient(135deg, #3b82f6, #06b6d4);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #f43f5e;
+      --font-main: 'Noto Sans JP', 'Outfit', sans-serif;
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      line-height: 1.6;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Header Section */
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+    }
+
+    .header-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      background: var(--primary-gradient);
+      width: 45px;
+      height: 45px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 20px;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    }
+
+    .logo-title h1 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #1e293b;
+    }
+
+    .logo-title p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* API Key Field */
+    .api-key-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f8fafc;
+      border: 1px solid var(--card-border);
+      padding: 8px 16px;
+      border-radius: 12px;
+      max-width: 450px;
+      width: 100%;
+    }
+
+    .api-key-label {
+      font-size: 12px;
+      font-weight: bold;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .api-key-input {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-size: 14px;
+      width: 100%;
+      outline: none;
+    }
+
+    .api-key-input::placeholder {
+      color: #94a3b8;
+    }
+
+    /* Selector Card */
+    .selector-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+      background: rgba(0, 0, 0, 0.01);
+      border-top: 1px solid #f1f5f9;
+      padding-top: 15px;
+    }
+
+    .select-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    select {
+      width: 100%;
+      background: #ffffff;
+      color: var(--text-main);
+      border: 2px solid #e2e8f0;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      transition: var(--transition);
+    }
+
+    select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .select-wrapper::after {
+      content: '▼';
+      font-size: 10px;
+      color: var(--text-muted);
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .round-meta {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .round-meta span {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* Main Grid Layout */
+    .app-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 1024px) {
+      .app-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Card Panels */
+    .panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: var(--transition);
+    }
+
+    .panel-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1e293b;
+      border-left: 5px solid var(--primary);
+      padding-left: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: -15px;
+    }
+
+    /* Charts Component styling */
+    .charts-container {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .chart-card {
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .chart-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .chart-unit {
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: normal;
+    }
+
+    .chart-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .chart-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .chart-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    .chart-bar-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .chart-bar-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+    }
+
+    .series-label {
+      width: 65px;
+      color: var(--text-muted);
+      font-size: 11px;
+      text-align: right;
+    }
+
+    .bar-outer {
+      flex-grow: 1;
+      height: 16px;
+      background: #e2e8f0;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bar-inner {
+      height: 100%;
+      border-radius: 8px;
+      width: 0; /* Animated dynamically by JS */
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .bar-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: bold;
+      width: 35px;
+      color: #475569;
+      text-align: left;
+    }
+
+    .legend-container {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+      font-size: 11px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-muted);
+    }
+
+    .legend-color {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+    }
+
+    /* Question box styling */
+    .question-box {
+      background: #f5f3ff;
+      border: 1px solid #e0e7ff;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .question-num {
+      background: var(--primary-gradient);
+      color: #fff;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 3px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
+    .question-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #334155;
+    }
+
+    /* Criteria styling */
+    .criteria-box {
+      background: #fff5f5;
+      border: 1px solid #fee2e2;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .criteria-title {
+      font-size: 13px;
+      font-weight: bold;
+      color: #e11d48;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .criteria-list {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .criteria-item {
+      font-size: 12px;
+      color: #4f4f4f;
+      line-height: 1.5;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .criteria-item::before {
+      content: '•';
+      color: #e11d48;
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+    }
+
+    /* Inputs Workspace styling */
+    .input-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .input-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .input-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .counter {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .counter.warning {
+      color: var(--danger);
+      font-weight: bold;
+      animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.05); }
+    }
+
+    textarea {
+      width: 100%;
+      height: 140px;
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 14px;
+      color: var(--text-main);
+      font-family: var(--font-main);
+      font-size: 14px;
+      line-height: 1.6;
+      resize: none;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: var(--transition);
+      width: 100%;
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #475569;
+      border: 2px solid #e2e8f0;
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .btn-primary {
+      background: var(--primary-gradient);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 16px rgba(99, 102, 241, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Results Section styling */
+    .results-panel {
+      grid-column: 1 / -1; /* spans full width */
+      display: none; /* dynamically shown by JS */
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.08);
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .score-circle-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 30px 20px;
+      border: 1px solid #f1f5f9;
+    }
+
+    .score-circle {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .score-circle svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .score-circle circle {
+      fill: none;
+      stroke-width: 12;
+      stroke-linecap: round;
+    }
+
+    .score-circle .bg-circle {
+      stroke: #e2e8f0;
+    }
+
+    .score-circle .progress-circle {
+      stroke: url(#scoreGradient);
+      stroke-dasharray: 439.6; /* 2 * PI * r (r=70) */
+      stroke-dashoffset: 439.6;
+      transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .score-text-container {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .score-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1;
+      color: #1e293b;
+    }
+
+    .score-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    .result-badge {
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .badge-pass {
+      background: #ecfdf5;
+      color: var(--success);
+      border: 1px solid #a7f3d0;
+    }
+
+    .badge-fail {
+      background: #fff5f5;
+      color: var(--danger);
+      border: 1px solid #fee2e2;
+    }
+
+    .sub-scores {
+      display: flex;
+      gap: 20px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .sub-score-item {
+      flex: 1;
+      text-align: center;
+      background: #ffffff;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .sub-score-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .sub-score-lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Detailed Evaluations */
+    .evaluation-details {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .eval-section {
+      background: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+    }
+
+    .eval-header {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 8px;
+    }
+
+    .eval-badge {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    .eval-badge-q1 { background: #e0e7ff; color: #4f46e5; }
+    .eval-badge-q2 { background: #fce7f3; color: #db2777; }
+
+    .strengths-weaknesses {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .strengths-weaknesses {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .sw-card {
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 13px;
+    }
+
+    .sw-strength {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+    }
+
+    .sw-weakness {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #92400e;
+    }
+
+    .sw-title {
+      font-weight: bold;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Deductions styling in results */
+    .result-deductions {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .deductions-list-title {
+      font-size: 13px;
+      font-weight: bold;
+      color: var(--text-muted);
+    }
+
+    .deduction-result-item {
+      background: #fff5f5;
+      border: 1px solid #fee2e2;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .deduction-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .deduction-criterion {
+      font-weight: 700;
+      color: #b91c1c;
+    }
+
+    .deduction-detail {
+      font-size: 12px;
+      color: #7f1d1d;
+    }
+
+    .deduction-penalty {
+      background: #fee2e2;
+      color: #ef4444;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-family: 'Outfit', sans-serif;
+      white-space: nowrap;
+    }
+
+    .no-deductions {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 12px;
+      color: #166534;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Model Answers comparison */
+    .model-answer-container {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .model-answer-box {
+      background: #f5f3ff;
+      border: 1px solid #ddd6fe;
+      border-radius: 10px;
+      padding: 15px;
+      font-size: 13px;
+      position: relative;
+    }
+
+    .model-answer-header {
+      font-weight: bold;
+      color: #5b21b6;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .model-answer-text {
+      color: #334155;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .btn-copy {
+      background: #ffffff;
+      border: 1px solid #ddd6fe;
+      color: #5b21b6;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-copy:hover {
+      background: #5b21b6;
+      color: #fff;
+      border-color: #5b21b6;
+    }
+
+    .overall-comment-box {
+      grid-column: 1 / -1;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .overall-comment-title {
+      font-size: 15px;
+      font-weight: bold;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .overall-comment-text {
+      font-size: 14px;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    /* Loading Overlay spinner */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none; /* Controlled by JS */
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid #e2e8f0;
+      border-top-color: var(--primary);
+      border-bottom-color: #ec4899;
+      border-radius: 50%;
+      animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    }
+
+    .loading-text {
+      font-size: 16px;
+      font-weight: bold;
+      color: #1e293b;
+      letter-spacing: 1px;
+    }
+
+    .loading-subtext {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Utility classes */
+    .transition-fade {
+      opacity: 1;
+      transition: opacity 0.2s ease-in-out;
+    }
+    .transition-fade.hidden {
+      opacity: 0;
+    }
+
+    .scroll-anchor {
+      scroll-margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Top Header -->
+    <header>
+      <div class="header-main">
+        <div class="logo-container">
+          <div class="logo-icon">筑</div>
+          <div class="logo-title">
+            <h1>筑波大学大学院カウンセリング学位プログラム対策</h1>
+            <p>10パターン自動採点記述トレーニング・Webシステム</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Selector bar -->
+      <div class="selector-bar">
+        <div class="select-wrapper">
+          <select id="roundSelector" aria-label="演習回数を選択">
+            <!-- Dynamically populated -->
+          </select>
+        </div>
+        <div class="round-meta" id="roundMeta">
+          選択中: <span id="metaTitle">第1回: 組織開発と心理的安全性</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Dashboard -->
+    <main class="app-grid">
+
+      <!-- Left Column: Reference statistics, Problem questions, and Criteria -->
+      <div class="panel transition-fade" id="leftPanel">
+        <h2 class="panel-title" id="panelRoundTitle">第1回: 組織開発と心理的安全性</h2>
+        <div class="panel-subtitle">提示されている客観的な数値情報を確認してください。</div>
+
+        <!-- Dynamic Visual CSS Charts -->
+        <div class="charts-container" id="chartsContainer">
+          <!-- Dynamically populated with bar charts -->
+        </div>
+
+        <!-- Problem box -->
+        <div class="question-box">
+          <span class="question-num">問1：問題文</span>
+          <div class="question-text" id="q1Text"></div>
+        </div>
+
+        <div class="question-box">
+          <span class="question-num">問2：問題文</span>
+          <div class="question-text" id="q2Text"></div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: User Answers Inputs -->
+      <div class="panel">
+        <h2 class="panel-title">解答ワークスペース</h2>
+        <div class="panel-subtitle">300字以内で記述してください。具体的な数値（ファクト）を対比させる記述が求められます。</div>
+
+        <div class="input-section">
+          <div class="input-header">
+            <label class="input-label" for="q1Input">問1 解答欄</label>
+            <span class="counter" id="q1Counter">0 / 300字</span>
+          </div>
+          <textarea id="q1Input" placeholder="図から読み取れるデータを対比させ、300字以内で論述してください。数値やパーセンテージを漏れなく記述することが重要です。"></textarea>
+        </div>
+
+        <div class="input-section">
+          <div class="input-header">
+            <label class="input-label" for="q2Input">問2 解答欄</label>
+            <span class="counter" id="q2Counter">0 / 300字</span>
+          </div>
+          <textarea id="q2Input" placeholder="特定された課題の因果関係を分析するための調査計画を、独立変数・従属変数を明示し、介入を伴わない設計で300字以内で記述してください。"></textarea>
+        </div>
+
+        <div class="button-group">
+          <button type="button" class="btn btn-secondary" id="saveDraftBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            一時保存
+          </button>
+          <button type="button" class="btn btn-primary" id="gradeBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            厳格に自動採点する
+          </button>
+        </div>
+      </div>
+
+      <!-- Results Panel (Full Width below) -->
+      <div class="panel results-panel scroll-anchor" id="resultsPanel">
+        <h2 class="panel-title">自動採点評価レポート</h2>
+        <div class="panel-subtitle">Gemini 2.5 Flashが採点官となり、厳密な減点方式で審査した結果です。</div>
+
+        <div class="results-grid">
+          
+          <!-- Circle Score Column -->
+          <div class="score-circle-container">
+            <div class="score-circle">
+              <svg>
+                <defs>
+                  <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#818cf8" />
+                    <stop offset="50%" stop-color="#6366f1" />
+                    <stop offset="100%" stop-color="#ec4899" />
+                  </linearGradient>
+                </defs>
+                <circle class="bg-circle" cx="80" cy="80" r="70" />
+                <circle class="progress-circle" id="resultCircle" cx="80" cy="80" r="70" />
+              </svg>
+              <div class="score-text-container">
+                <span class="score-value" id="totalScoreText">0</span>
+                <span class="score-label">Points</span>
+              </div>
+            </div>
+
+            <div class="result-badge" id="resultPassBadge">合格判定</div>
+
+            <div class="sub-scores">
+              <div class="sub-score-item">
+                <div class="sub-score-num" id="q1ScoreText">0/50</div>
+                <div class="sub-score-lbl">問1スコア</div>
+              </div>
+              <div class="sub-score-item">
+                <div class="sub-score-num" id="q2ScoreText">0/50</div>
+                <div class="sub-score-lbl">問2スコア</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Question-by-question evaluations -->
+          <div class="evaluation-details">
+            
+            <!-- Question 1 evaluation -->
+            <div class="eval-section">
+              <div class="eval-header">
+                <span class="eval-badge eval-badge-q1">問1</span>
+                <span>問1の評価・添削</span>
+              </div>
+              
+              <div class="strengths-weaknesses">
+                <div class="sw-card sw-strength">
+                  <div class="sw-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    評価・強み
+                  </div>
+                  <div id="q1Strengths"></div>
+                </div>
+                <div class="sw-card sw-weakness">
+                  <div class="sw-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    改善の余地・弱み
+                  </div>
+                  <div id="q1Weaknesses"></div>
+                </div>
+              </div>
+
+              <!-- Question 1 deductions -->
+              <div class="result-deductions">
+                <div class="deductions-list-title">減点適用リスト</div>
+                <div id="q1DeductionsList">
+                  <!-- JS dynamically fills -->
+                </div>
+              </div>
+
+              <!-- Question 1 Model Answer -->
+              <div class="model-answer-container">
+                <div class="model-answer-box">
+                  <div class="model-answer-header">
+                    <span>問1 模範解答</span>
+                    <button type="button" class="btn-copy" onclick="copyText('q1ModelAnswerText', this)">コピー</button>
+                  </div>
+                  <div class="model-answer-text" id="q1ModelAnswerText"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 2 evaluation -->
+            <div class="eval-section">
+              <div class="eval-header">
+                <span class="eval-badge eval-badge-q2">問2</span>
+                <span>問2の評価・添削</span>
+              </div>
+              
+              <div class="strengths-weaknesses">
+                <div class="sw-card sw-strength">
+                  <div class="sw-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    評価・強み
+                  </div>
+                  <div id="q2Strengths"></div>
+                </div>
+                <div class="sw-card sw-weakness">
+                  <div class="sw-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    改善の余地・弱み
+                  </div>
+                  <div id="q2Weaknesses"></div>
+                </div>
+              </div>
+
+              <!-- Question 2 deductions -->
+              <div class="result-deductions">
+                <div class="deductions-list-title">減点適用リスト</div>
+                <div id="q2DeductionsList">
+                  <!-- JS dynamically fills -->
+                </div>
+              </div>
+
+              <!-- Question 2 Model Answer -->
+              <div class="model-answer-container">
+                <div class="model-answer-box">
+                  <div class="model-answer-header">
+                    <span>問2 模範解答</span>
+                    <button type="button" class="btn-copy" onclick="copyText('q2ModelAnswerText', this)">コピー</button>
+                  </div>
+                  <div class="model-answer-text" id="q2ModelAnswerText"></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Overall Commmentary -->
+          <div class="overall-comment-box">
+            <div class="overall-comment-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              総評とアドバイス
+            </div>
+            <div class="overall-comment-text" id="overallCommentary"></div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- Loading Animation Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <div class="loading-text">採点官が答案を審査中...</div>
+    <div class="loading-subtext">Gemini 2.5 Flash が厳格な減点方式で客観的に評価しています（10〜20秒かかります）</div>
+  </div>
+
+  <script>
+    // 10 Pattern Dataset definitions
+    const dataset = [
+      {
+        id: 1,
+        title: "第1回：組織開発と心理的安全性",
+        q1: "図1、図2から読み取れる、男女間の管理職登任意向の格差、その背景にある阻害要因、および職場の心理的安全性が与える影響について、300字以内で論じなさい。",
+        q2: "問1で特定された課題の因果関係をさらに詳細に検証するため、企業へ大きな負荷をかけない（環境改善介入を伴わない）調査研究計画を、独立変数と従属変数を明記して300字以内で記述しなさい。",
+        criteria: [
+          "【問1】男女の意向比率の逆転（男は意向あり、女は意向なしが半数超）への言及不足（-10点）",
+          "【問1】女性の最大阻害要因が「両立困難（66%）」である事実の指摘不足（-10点）",
+          "【問1】心理的安全性（高い職場で42%へ上昇）の影響への言及不足（-10点）",
+          "【問2】「組織的改善・環境介入」を計画に入れている場合（-15点）",
+          "【問2】独立変数と従属変数の定義・分離の不備（-10点）"
+        ],
+        charts: [
+          {
+            title: "図1-1: 管理職への登任意向",
+            type: "bar-group",
+            labels: ["意向あり", "意向なし"],
+            series: [
+              { name: "男性", data: [55, 24], color: "var(--accent-gradient)" },
+              { name: "女性", data: [22, 52], color: "var(--secondary-gradient)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図1-2: 管理職を希望しない主な理由",
+            type: "bar-group",
+            labels: ["両立困難", "責任過多", "サポート不足"],
+            series: [
+              { name: "男性", data: [14, 45, 12], color: "var(--accent-gradient)" },
+              { name: "女性", data: [66, 38, 32], color: "var(--secondary-gradient)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図2: 心理的安全性別・女性の管理職登任意向",
+            type: "bar-group",
+            labels: ["意向あり", "意向なし"],
+            series: [
+              { name: "高い職場", data: [42, 58], color: "var(--primary-gradient)" },
+              { name: "低い職場", data: [8, 92], color: "linear-gradient(135deg, #ef4444, #f59e0b)" }
+            ],
+            unit: "%"
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: "第2回：産業メンタルヘルス",
+        q1: "図1、図2、図3から読み取れる、労働者のストレスの現状、相談行動、および職場の取り組みの効果との関連について、300字以内で論じなさい。",
+        q2: "問1で特定された課題について、その因果メカニズムを詳細に分析するため、介入を伴わない調査研究計画を独立変数・従属変数を明記して300字以内で記述しなさい。",
+        criteria: [
+          "【問1】男女のストレス要因の質的違い（男＝量、女＝対人関係）への言及不足（-10点）",
+          "【問1】公式窓口への相談が男女共通で5%未満と極めて低いアノマリーへの指摘不足（-10点）",
+          "【問1】窓口なしで女性のストレス（3.82）が最大化する点や改善の効果への言及不足（-10点）",
+          "【問2】組織的改善や実験介入を提案している場合（-15点）",
+          "【問2】独立変数と従属変数の対応関係の不備（-10点）"
+        ],
+        charts: [
+          {
+            title: "図1-1: 強いストレスを感じる労働者の割合",
+            type: "bar-group",
+            labels: ["ストレス有"],
+            series: [
+              { name: "全体", data: [82.2], color: "var(--primary-gradient)" },
+              { name: "男性", data: [80.5], color: "var(--accent-gradient)" },
+              { name: "女性", data: [84.6], color: "var(--secondary-gradient)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図1-2: ストレスの主な理由",
+            type: "bar-group",
+            labels: ["仕事の量", "職場の対人関係"],
+            series: [
+              { name: "男性", data: [45.3, 28.4], color: "var(--accent-gradient)" },
+              { name: "女性", data: [38.2, 42.5], color: "var(--secondary-gradient)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図2: ストレスを実際に相談した相手",
+            type: "bar-group",
+            labels: ["家族・友人", "上司・同僚", "社内専門窓口"],
+            series: [
+              { name: "男性", data: [45.4, 62.1, 5.3], color: "var(--accent-gradient)" },
+              { name: "女性", data: [72.3, 54.2, 4.1], color: "var(--secondary-gradient)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図3-1: 専門窓口設置別・ストレス度 (5点満点)",
+            type: "bar-group",
+            labels: ["設置あり", "設置なし"],
+            series: [
+              { name: "男性", data: [3.12, 3.65], color: "var(--accent-gradient)" },
+              { name: "女性", data: [3.08, 3.82], color: "var(--secondary-gradient)" }
+            ],
+            unit: "点"
+          },
+          {
+            title: "図3-2: 環境改善有無別・ストレス度 (5点満点)",
+            type: "bar-group",
+            labels: ["改善あり", "改善なし"],
+            series: [
+              { name: "男性", data: [2.95, 3.52], color: "var(--accent-gradient)" },
+              { name: "女性", data: [2.88, 3.61], color: "var(--secondary-gradient)" }
+            ],
+            unit: "点"
+          }
+        ]
+      },
+      {
+        id: 3,
+        title: "第3回：キャリア発達と中高年労働者のセカンドキャリア",
+        q1: "図1、図2、図3から読み取れる中高年労働者のキャリア発達における課題と、モチベーションを維持・向上させる要因について、300字以内で論じなさい。",
+        q2: "50代後半において受講なし群のモチベーションが著しく低下する背景、あるいは社外活動がキャリア見通しを向上させる理由を検証するため、介入を伴わない調査研究計画を、独立変数・従属変数を明記して300字以内で記述しなさい。",
+        criteria: [
+          "【問1】50代後半「受講なし群（2.8）」の激しい意欲低下への言及不足（-10点）",
+          "【問1】不安要素の最大が収入減（68%）と人間関係（55%）である事実の不記載（-10点）",
+          "【問1】社外活動（週1以上で4.3）によるキャリア見通し向上への着目不足（-10点）",
+          "【問2】研修の義務付けなど人事制度の介入提案（-15点）",
+          "【問2】独立変数と従属変数の不整合（-10点）"
+        ],
+        charts: [
+          {
+            title: "図1: キャリア研修受講別・職務モチベーション (5点満点)",
+            type: "bar-group",
+            labels: ["50代前半", "50代後半"],
+            series: [
+              { name: "受講あり", data: [4.2, 4.1], color: "var(--primary-gradient)" },
+              { name: "受講なし", data: [3.5, 2.8], color: "linear-gradient(135deg, #ef4444, #f59e0b)" }
+            ],
+            unit: "点"
+          },
+          {
+            title: "図2: セカンドキャリアへの不安要素",
+            type: "bar-group",
+            labels: ["役職定年による収入減", "スキルの陳腐化", "社内人間関係の再構築"],
+            series: [
+              { name: "不安比率", data: [68, 42, 55], color: "var(--secondary-gradient)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図3: 社外活動参加別・キャリア見通し (5点満点)",
+            type: "bar-group",
+            labels: ["週1回以上参加", "参加なし"],
+            series: [
+              { name: "見通しスコア", data: [4.3, 2.9], color: "var(--accent-gradient)" }
+            ],
+            unit: "点"
+          }
+        ]
+      },
+      {
+        id: 4,
+        title: "第4回：両立支援とワーク・ファミリー・コンフリクト",
+        q1: "図1、図2、図3から読み取れる、育休復帰後の両立支援制度の現状の限界と、離職意向を左右する決定的な要因について、300字以内で論じなさい。",
+        q2: "時短勤務者が抱く「周囲への罪悪感（74%）」や「離職意向」に対して、上司の関わり（FSSB）がどのように影響するかをより詳細に分析するため、介入を伴わない調査研究計画を、独立変数・従属変数を明記して300字以内で記述しなさい。",
+        criteria: [
+          "【問1】時短制度利用でもWFC（3.9）は高水準であり制度単体の限界がある点への指摘不足（-10点）",
+          "【問1】利用者の罪悪感（74%）やマミートラック（68%）の心理的負荷への言及不足（-10点）",
+          "【問1】上司のFSSBが低い場合に離職意向が58%に暴騰する落差への着目不足（-10点）",
+          "【問2】「管理職研修の強制」等の介入提案（-15点）",
+          "【問2】独立変数（上司のFSSB）と従属変数（罪悪感・離職意向）の設計不備（-10点）"
+        ],
+        charts: [
+          {
+            title: "図1: 時短勤務利用者のWFCの強さ (5点満点)",
+            type: "bar-group",
+            labels: ["時短勤務利用者", "フルタイム復帰者"],
+            series: [
+              { name: "WFC強度", data: [3.9, 4.2], color: "var(--secondary-gradient)" }
+            ],
+            unit: "点"
+          },
+          {
+            title: "図2: 時短勤務利用者が感じる心理的負荷",
+            type: "bar-group",
+            labels: ["周囲への罪悪感", "キャリア停滞感", "業務の過密化"],
+            series: [
+              { name: "心理的負荷", data: [74, 68, 52], color: "linear-gradient(135deg, #ef4444, #f59e0b)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図3: 上司のFSSB別・WFCと離職意向",
+            type: "bar-group",
+            labels: ["WFC (5点満点)", "離職意向 (%)"],
+            series: [
+              { name: "FSSB高い上司", data: [2.1, 12], color: "var(--primary-gradient)" },
+              { name: "FSSB低い上司", data: [4.5, 58], color: "linear-gradient(135deg, #ef4444, #db2777)" }
+            ],
+            unit: "数値"
+          }
+        ]
+      },
+      {
+        id: 5,
+        title: "第5回：テレワーク環境下における孤独感とエンゲイジメント",
+        q1: "図1、図2、図3から読み取れる、テレワークの拡大が労働者の心理面にもたらす弊害と、エンゲイジメントを維持する条件について、300字以内で論じなさい。",
+        q2: "完全在宅勤務（週5日）において、会社への信頼感の低さがエンゲイジメントを「1.8」まで壊滅させる詳細なメカニズムを解明するため、介入を伴わない調査研究計画を独立変数・従属変数を明記して300字以内で記述しなさい。",
+        criteria: [
+          "【問1】完全在宅（週5日）で孤独感が4.6と著しく高まる弊害への指摘不足（-10点）",
+          "【問1】不足場面の最大が「雑談・非公式な会話（82%）」である事実の指摘不足（-10点）",
+          "【問1】会社への信頼感の有無でエンゲイジメントが4.1と1.8に激しく分裂するデータの歪みへの着目不足（-10点）",
+          "【問2】「雑談ツールの導入」等の環境介入の提案（-15点）",
+          "【問2】独立変数（信頼感尺度）と従属変数（エンゲイジメント）の設計不備（-10点）"
+        ],
+        charts: [
+          {
+            title: "図1: 週のテレワーク日数別・孤独感の強さ (5点満点)",
+            type: "bar-group",
+            labels: ["週1日以下", "週3日", "週5日 (完全在宅)"],
+            series: [
+              { name: "孤独感", data: [2.1, 3.5, 4.6], color: "var(--accent-gradient)" }
+            ],
+            unit: "点"
+          },
+          {
+            title: "図2: テレワーク中のコミュニケーション不足場面",
+            type: "bar-group",
+            labels: ["雑談・非公式会話", "業務タイムリー相談", "評価の不透明さ"],
+            series: [
+              { name: "不足の割合", data: [82, 45, 61], color: "var(--secondary-gradient)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図3: 信頼感別・完全在宅時のエンゲイジメント (5点満点)",
+            type: "bar-group",
+            labels: ["完全在宅（信頼高）", "完全在宅（信頼低）"],
+            series: [
+              { name: "エンゲイジメント", data: [4.1, 1.8], color: "var(--primary-gradient)" }
+            ],
+            unit: "点"
+          }
+        ]
+      },
+      {
+        id: 6,
+        title: "第6回：非正規雇用労働者のキャリア不安と自己効力感",
+        q1: "図1、図2、図3から読み取れる、非正規雇用労働者が直面しているキャリア上の心理的課題と、それを打破するための鍵となる要因について、300字以内で論じなさい。",
+        q2: "非正規雇用の「成功体験なし群」で自己効力感が2.2と著しく低迷する理由、または成功体験が自己効力感を4.1まで跳ね上げる因果を検証するため、介入を伴わない調査研究計画を独立変数・従属変数を明記して300字以内で記述しなさい。",
+        criteria: [
+          "【問1】非正規の「不安あり（78%）」が正規（42%）の約2倍という格差への着目不足（-10点）",
+          "【問1】要因として雇い止め（72%）だけでなく「評価の欠知（64%）」がある事実への言及不足（-10点）",
+          "【問1】「成功体験の有無」が自己効力感を2.2から4.1へ変容させるファクトの指摘不足（-10点）",
+          "【問2】「正社員登用」などの雇用・人事介入の提案（-15点）",
+          "【問2】独立変数（職務自律性など）と従属変数（自己効力感）の不一致（-10点）"
+        ],
+        charts: [
+          {
+            title: "図1: 雇用形態別・将来のキャリア不安がある人の割合",
+            type: "bar-group",
+            labels: ["不安あり"],
+            series: [
+              { name: "正規雇用", data: [42], color: "var(--accent-gradient)" },
+              { name: "非正規雇用", data: [78], color: "var(--secondary-gradient)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図2: 非正規労働者が抱くキャリア不安の具体的内容",
+            type: "bar-group",
+            labels: ["雇い止めリスク", "正当な評価欠如", "成長機会不平等"],
+            series: [
+              { name: "該当率", data: [72, 64, 58], color: "linear-gradient(135deg, #ef4444, #f59e0b)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図3: 過去の成功体験別・キャリア自己効力感 (5点満点)",
+            type: "bar-group",
+            labels: ["成功体験あり", "成功体験なし"],
+            series: [
+              { name: "非正規の自己効力感", data: [4.1, 2.2], color: "var(--primary-gradient)" }
+            ],
+            unit: "点"
+          }
+        ]
+      },
+      {
+        id: 7,
+        title: "第7回：メンター制度の機能不全と若手の初期キャリア発達",
+        q1: "図1、図2、図3から読み取れる、新入社員の離職防止および初期キャリア発達における現行メンター制度の課題と、有効機能の条件を300字以内で論じなさい。",
+        q2: "メンターの多忙（78%）や傾聴姿勢の低さが、なぜ若手の主体性（2.1）を削ぎ、離職意向を高めるのか。その詳細を分析するため、介入を伴わない調査研究計画を独立変数・従属変数を明記して300字以内で記述しなさい。",
+        criteria: [
+          "【問1】メンターへの不満が離職意向を48%（満足群の4倍以上）へ急増させる事実の指摘不足（-10点）",
+          "【問1】不満の最大原因が「多忙による面談見送り（78%）」である運用の闇への言及不足（-10点）",
+          "【問1】メンターの「傾聴姿勢」が若手の主体性を2.1から4.3へ変える条件への着目不足（-10点）",
+          "【問2】「メンター研修の強制」等の介入プログラムの提案（-15点）",
+          "【問2】独立変数と従属変数の分離不全（-10点）"
+        ],
+        charts: [
+          {
+            title: "図1: メンター制度満足別・1年以内離職意向",
+            type: "bar-group",
+            labels: ["離職意向"],
+            series: [
+              { name: "満足群", data: [11], color: "var(--primary-gradient)" },
+              { name: "不満群", data: [48], color: "var(--secondary-gradient)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図2: メンター制度に「不満」を持つ若手の理由",
+            type: "bar-group",
+            labels: ["多忙による面談見送り", "年次が近すぎる", "相性の悪さ"],
+            series: [
+              { name: "不満要因", data: [78, 42, 65], color: "linear-gradient(135deg, #ef4444, #f59e0b)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図3: メンター傾聴姿勢別・プロアクティブ行動 (5点満点)",
+            type: "bar-group",
+            labels: ["傾聴姿勢が高い", "傾聴姿勢が低い"],
+            series: [
+              { name: "プロアクティブ行動", data: [4.3, 2.1], color: "var(--accent-gradient)" }
+            ],
+            unit: "点"
+          }
+        ]
+      },
+      {
+        id: 8,
+        title: "第8回：管理職のバーンアウトとソーシャルサポート",
+        q1: "図1、図2、図3から読み取れる、中間管理職のメンタルヘルスの現状と、バーンアウトを予防するための防波堤となる要因について、300字以内で論じなさい。",
+        q2: "プレイング業務過多（82%）の中で、なぜ「横のつながり」がないと消耗感が4.5と最悪化するのか。この詳細を分析するため、介入を伴わない調査研究計画を独立変数・従属変数を明記して300字以内で記述しなさい。",
+        criteria: [
+          "【問1】中間管理職の燃え尽き率（44%）が一般社員の2倍以上という現状の指摘不足（-10点）",
+          "【問1】主因がプレイング業務過多（82%）や経営層からのプレッシャー（76%）の板挟みである事実の不記載（-10点）",
+          "【問1】非公式なピア・サポートが情緒的消耗感を4.5から2.8へ下げるファクトへの着目不足（-10点）",
+          "【問2】「業務量を減らす」「人事主導で体制を組む」等の介入提案（-15点）",
+          "【問2】独立変数（ピアサポート頻度）と従属変数（情緒的消耗感）の設計不備（-10点）"
+        ],
+        charts: [
+          {
+            title: "図1: 中間管理職のバーンアウト該当率",
+            type: "bar-group",
+            labels: ["バーンアウト率"],
+            series: [
+              { name: "一般社員", data: [18], color: "var(--accent-gradient)" },
+              { name: "中間管理職", data: [44], color: "var(--secondary-gradient)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図2: 中間管理職が感じるストレスの主因",
+            type: "bar-group",
+            labels: ["経営層プレッシャー", "部下育成重圧", "プレイング業務過多"],
+            series: [
+              { name: "該当率", data: [76, 68, 82], color: "linear-gradient(135deg, #ef4444, #f59e0b)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図3: ピアサポート有無別・情緒的消耗感 (5点満点)",
+            type: "bar-group",
+            labels: ["サポートあり", "サポートなし"],
+            series: [
+              { name: "情緒的消耗感", data: [2.8, 4.5], color: "var(--primary-gradient)" }
+            ],
+            unit: "点"
+          }
+        ]
+      },
+      {
+        id: 9,
+        title: "第9回：育児・介護ダブルケア労働者の就業継続と柔軟性",
+        q1: "図1、図2、図3から読み取れる、ダブルケア労働者が直面する離職危機の現状と、就業継続を可能にする要因について、300字以内で論じなさい。",
+        q2: "制度があっても「利用しにくい」職場で離職意向が64%に暴騰する心理的要因の詳細を分析するため、企業への介入を一切行わない調査研究計画を、独立変数・従属変数を明記して300字以内で記述しなさい。",
+        criteria: [
+          "【問1】ダブルケア労働者の離職検討率（56%）が一般の4倍という現状への指摘不足（-10点）",
+          "【問1】困難主因が「突発的欠勤（84%）」と「時間の柔軟性欠如（72%）」である事実の欠落（-10点）",
+          "【問1】制度が「利用しやすい」環境で離職意向が64%から18%へ大暴落する落差への着目不足（-10点）",
+          "【問2】「両立支援の新制度を導入する」等の組織的介入の提案（-15点）",
+          "【問2】独立変数（心理的利用障壁）と従属変数（離職意向）の設計不備（-10点）"
+        ],
+        charts: [
+          {
+            title: "図1: ダブルケア労働者の離職・転職検討率",
+            type: "bar-group",
+            labels: ["検討率"],
+            series: [
+              { name: "一般労働者", data: [14], color: "var(--accent-gradient)" },
+              { name: "ダブルケア労働者", data: [56], color: "var(--secondary-gradient)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図2: 就業継続で困難と感じる要因",
+            type: "bar-group",
+            labels: ["突発的欠勤対応", "時間柔軟性欠如", "理解不足での孤立"],
+            series: [
+              { name: "困難度", data: [84, 72, 61], color: "linear-gradient(135deg, #ef4444, #f59e0b)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図3: 休暇・フレックス利用別・離職意向",
+            type: "bar-group",
+            labels: ["利用しやすい", "利用しにくい"],
+            series: [
+              { name: "離職意向", data: [18, 64], color: "var(--primary-gradient)" }
+            ],
+            unit: "%"
+          }
+        ]
+      },
+      {
+        id: 10,
+        title: "第10回：高度専門職のキャリア自律と組織コミットメント",
+        q1: "図1、図2、図3から読み取れる、高度専門職のキャリア自律に伴う組織離脱のリスクと、有能な人材を組織に引き留める（愛着を高める）ための条件について、300字以内で論じなさい。",
+        q2: "キャリア自律が高い人材が、挑戦的機会がない場合にコミットメントを「1.9」まで激減させる因果のメカニズムを、介入を伴わない調査研究計画として、独立変数・従属変数を明記して300字以内で記述しなさい。",
+        criteria: [
+          "【問1】自律意識が高い専門職ほど他社への転職意向が62%（低い層の2.5倍）と高いリスクへの指摘不足（-10点）",
+          "【問1】残留条件トップが報酬評価（85%）と挑戦的タスク（78%）である事実の不記載（-10点）",
+          "【問1】「挑戦的機会」がないと優秀層のコミットメントが1.9に大暴落するデータの歪みへの着目不足（-10点）",
+          "【問2】「新規制度や副業解禁を企業に導入させる」等の介入提案（-15点）",
+          "【問2】独立変数（キャリア自律意識、挑戦性の知覚）と従属変数（組織コミットメント）の設計不備（-10点）"
+        ],
+        charts: [
+          {
+            title: "図1: キャリア自律意識別・他社への転職意向",
+            type: "bar-group",
+            labels: ["転職意向あり"],
+            series: [
+              { name: "自律意識が高い", data: [62], color: "var(--secondary-gradient)" },
+              { name: "自律意識が低い", data: [24], color: "var(--accent-gradient)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図2: 高度自律専門職が組織に残留を望む条件",
+            type: "bar-group",
+            labels: ["挑戦的タスク付与", "正当な報酬評価", "兼業・副業容認"],
+            series: [
+              { name: "重要視する割合", data: [78, 85, 54], color: "var(--primary-gradient)" }
+            ],
+            unit: "%"
+          },
+          {
+            title: "図3: 挑戦的機会の提供有無別・組織コミットメント (5点満点)",
+            type: "bar-group",
+            labels: ["挑戦的機会あり", "挑戦的機会なし"],
+            series: [
+              { name: "コミットメント", data: [4.3, 1.9], color: "var(--accent-gradient)" }
+            ],
+            unit: "点"
+          }
+        ]
+      }
+    ];
+
+    // UI elements references
+    const roundSelector = document.getElementById('roundSelector');
+    const metaTitle = document.getElementById('metaTitle');
+    const panelRoundTitle = document.getElementById('panelRoundTitle');
+    const chartsContainer = document.getElementById('chartsContainer');
+    const q1Text = document.getElementById('q1Text');
+    const q2Text = document.getElementById('q2Text');
+    const leftPanel = document.getElementById('leftPanel');
+
+    const q1Input = document.getElementById('q1Input');
+    const q2Input = document.getElementById('q2Input');
+    const q1Counter = document.getElementById('q1Counter');
+    const q2Counter = document.getElementById('q2Counter');
+    const saveDraftBtn = document.getElementById('saveDraftBtn');
+    const gradeBtn = document.getElementById('gradeBtn');
+    const resultsPanel = document.getElementById('resultsPanel');
+    const totalScoreText = document.getElementById('totalScoreText');
+    const q1ScoreText = document.getElementById('q1ScoreText');
+    const q2ScoreText = document.getElementById('q2ScoreText');
+    const resultPassBadge = document.getElementById('resultPassBadge');
+    const resultCircle = document.getElementById('resultCircle');
+
+    const q1Strengths = document.getElementById('q1Strengths');
+    const q1Weaknesses = document.getElementById('q1Weaknesses');
+    const q1DeductionsList = document.getElementById('q1DeductionsList');
+    const q1ModelAnswerText = document.getElementById('q1ModelAnswerText');
+
+    const q2Strengths = document.getElementById('q2Strengths');
+    const q2Weaknesses = document.getElementById('q2Weaknesses');
+    const q2DeductionsList = document.getElementById('q2DeductionsList');
+    const q2ModelAnswerText = document.getElementById('q2ModelAnswerText');
+
+    const overallCommentary = document.getElementById('overallCommentary');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+
+    let activeRoundIndex = 0;
+
+    // Initialize application
+    window.addEventListener('DOMContentLoaded', () => {
+      // 1. Populate Selector dropdown
+      dataset.forEach((round, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = round.title;
+        roundSelector.appendChild(option);
+      });
+
+      // 3. Load active round index from memory/url
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlRound = parseInt(urlParams.get('round'), 10);
+      if (!isNaN(urlRound) && urlRound >= 1 && urlRound <= 10) {
+        activeRoundIndex = urlRound - 1;
+        roundSelector.value = activeRoundIndex;
+      }
+
+      // 4. Render active round data
+      updateActiveRound(activeRoundIndex);
+
+      // 5. Setup event listeners
+      roundSelector.addEventListener('change', (e) => {
+        activeRoundIndex = parseInt(e.target.value, 10);
+        
+        // Push State to URL without reload to allow bookmarking / refreshing
+        const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?round=${activeRoundIndex + 1}`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+
+        // Visual fade out transition
+        leftPanel.classList.add('hidden');
+        setTimeout(() => {
+          updateActiveRound(activeRoundIndex);
+          leftPanel.classList.remove('hidden');
+        }, 200);
+      });
+
+      // Realtime counters
+      q1Input.addEventListener('input', () => updateCharCounter(q1Input, q1Counter));
+      q2Input.addEventListener('input', () => updateCharCounter(q2Input, q2Counter));
+
+      // Save draft button
+      saveDraftBtn.addEventListener('click', saveAnswersToLocalStorage);
+
+      // Grade execution
+      gradeBtn.addEventListener('click', executeGrading);
+
+      // Keydown checks (Ctrl+S to save)
+      document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+          e.preventDefault();
+          saveAnswersToLocalStorage();
+        }
+      });
+    });
+
+    // Update the visual content of the page for the selected round
+    function updateActiveRound(index) {
+      const round = dataset[index];
+      
+      // Update Texts
+      metaTitle.textContent = round.title;
+      panelRoundTitle.textContent = round.title;
+      q1Text.textContent = round.q1;
+      q2Text.textContent = round.q2;
+
+      // Reset outputs container
+      resultsPanel.style.display = 'none';
+
+      // Load Saved Answers for this specific round
+      loadSavedAnswers(round.id);
+
+      // Render Visual CSS Charts
+      chartsContainer.innerHTML = '';
+      
+      round.charts.forEach(chart => {
+        const card = document.createElement('div');
+        card.className = 'chart-card';
+
+        // Title and Unit
+        const titleEl = document.createElement('div');
+        titleEl.className = 'chart-title';
+        titleEl.innerHTML = `<span>${chart.title}</span><span class="chart-unit">単位: ${chart.unit}</span>`;
+        card.appendChild(titleEl);
+
+        const barsContainer = document.createElement('div');
+        barsContainer.className = 'chart-bars';
+
+        if (chart.type === 'bar-group') {
+          // Render each Category Label
+          chart.labels.forEach((label, labelIdx) => {
+            const row = document.createElement('div');
+            row.className = 'chart-row';
+
+            const labelEl = document.createElement('div');
+            labelEl.className = 'chart-label';
+            labelEl.textContent = label;
+            row.appendChild(labelEl);
+
+            const barGroup = document.createElement('div');
+            barGroup.className = 'chart-bar-group';
+
+            // For each category, draw all series (e.g. Male, Female)
+            chart.series.forEach((s) => {
+              const val = s.data[labelIdx];
+              if (val === undefined) return;
+
+              const container = document.createElement('div');
+              container.className = 'chart-bar-container';
+
+              // Series Label
+              const sLabel = document.createElement('span');
+              sLabel.className = 'series-label';
+              sLabel.textContent = s.name;
+              container.appendChild(sLabel);
+
+              // Bar background outer
+              const barOuter = document.createElement('div');
+              barOuter.className = 'bar-outer';
+
+              // Bar filled inner
+              const barInner = document.createElement('div');
+              barInner.className = 'bar-inner';
+              barInner.style.background = s.color || 'var(--primary)';
+              
+              barOuter.appendChild(barInner);
+              container.appendChild(barOuter);
+
+              // Bar Value
+              const valEl = document.createElement('span');
+              valEl.className = 'bar-val';
+              valEl.textContent = val + (chart.unit === '%' ? '%' : '');
+              container.appendChild(valEl);
+
+              barGroup.appendChild(container);
+
+              // Triger width animation with small delay
+              setTimeout(() => {
+                // If it's a 5-point scale, map 5 to 100%
+                const pct = chart.unit === '点' ? (val / 5) * 100 : val;
+                barInner.style.width = pct + '%';
+              }, 50);
+            });
+
+            row.appendChild(barGroup);
+            barsContainer.appendChild(row);
+          });
+        }
+
+        card.appendChild(barsContainer);
+
+        // Add Legend at the bottom of chart
+        if (chart.series.length > 1) {
+          const legend = document.createElement('div');
+          legend.className = 'legend-container';
+          chart.series.forEach(s => {
+            legend.innerHTML += `
+              <div class="legend-item">
+                <span class="legend-color" style="background: ${s.color || 'var(--primary)'}"></span>
+                <span>${s.name}</span>
+              </div>
+            `;
+          });
+          card.appendChild(legend);
+        }
+
+        chartsContainer.appendChild(card);
+      });
+    }
+
+    // Characters counter handler
+    function updateCharCounter(inputEl, counterEl) {
+      const len = inputEl.value.length;
+      counterEl.textContent = `${len} / 300字`;
+      
+      if (len > 300) {
+        counterEl.classList.add('warning');
+      } else {
+        counterEl.classList.remove('warning');
+      }
+    }
+
+    // LocalStorage Draft savers
+    function saveAnswersToLocalStorage() {
+      const roundId = dataset[activeRoundIndex].id;
+      const q1Ans = q1Input.value;
+      const q2Ans = q2Input.value;
+
+      localStorage.setItem(`draft_r${roundId}_q1`, q1Ans);
+      localStorage.setItem(`draft_r${roundId}_q2`, q2Ans);
+
+      // Toast alert feedback
+      const alertDiv = document.createElement('div');
+      alertDiv.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--success);
+        color: #fff;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: bold;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        z-index: 100;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+      `;
+      alertDiv.textContent = '解答の下書きを一時保存しました。';
+      document.body.appendChild(alertDiv);
+      
+      setTimeout(() => {
+        alertDiv.style.opacity = '1';
+        alertDiv.style.transform = 'translateY(0)';
+      }, 50);
+
+      setTimeout(() => {
+        alertDiv.style.opacity = '0';
+        alertDiv.style.transform = 'translateY(10px)';
+        setTimeout(() => alertDiv.remove(), 300);
+      }, 3000);
+    }
+
+    // Load Draft from LocalStorage
+    function loadSavedAnswers(roundId) {
+      const q1Ans = localStorage.getItem(`draft_r${roundId}_q1`) || '';
+      const q2Ans = localStorage.getItem(`draft_r${roundId}_q2`) || '';
+
+      q1Input.value = q1Ans;
+      q2Input.value = q2Ans;
+
+      updateCharCounter(q1Input, q1Counter);
+      updateCharCounter(q2Input, q2Counter);
+    }
+
+    // Copy to clipboard helper
+    function copyText(elementId, btn) {
+      const text = document.getElementById(elementId).textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.textContent;
+        btn.textContent = 'コピー完了';
+        btn.style.background = 'var(--success)';
+        btn.style.color = '#fff';
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.background = '';
+          btn.style.color = '';
+        }, 1500);
+      });
+    }
+
+    // Execution of Grading via Gemini API Call
+    async function executeGrading() {
+      let apiKey = localStorage.getItem('gemini_api_key');
+      if (!apiKey) {
+        apiKey = prompt("Google AI StudioのGemini APIキーを入力してください（入力されたキーはブラウザに安全に一時保存されます）：");
+        if (apiKey) {
+          localStorage.setItem('gemini_api_key', apiKey.trim());
+        } else {
+          return;
+        }
+      }
+
+      const q1Ans = q1Input.value.trim();
+      const q2Ans = q2Input.value.trim();
+
+      if (!q1Ans || !q2Ans) {
+        alert("問1と問2の両方の解答欄に入力してください。");
+        return;
+      }
+
+      if (q1Ans.length > 300 || q2Ans.length > 300) {
+        if (!confirm("解答文字数が300字を超えています。このまま採点しますか？（大幅な字数過多は採点基準外となり厳しく減点される可能性があります）")) {
+          return;
+        }
+      }
+
+      // Show Loading Screen
+      loadingOverlay.style.display = 'flex';
+
+      const round = dataset[activeRoundIndex];
+
+      // Build structured grading prompt
+      const prompt = `
+あなたは筑波大学大学院カウンセリング学位プログラムの専門採点官として、受験者が入力した300字以内の記述解答（問1と問2）を「100点満点（問1: 50点満点、問2: 50点満点）からの厳格な減点方式」で審査します。
+
+【採点基準・審査方針】
+1. 各問ごとに指定された「採点基準」を満たしていない場合、1項目につき指示された点数（例: -10点や-15点）を一律で減点してください。
+2. 客観的ファクト（問題文や提示データに記載されている具体的な数値やデータの落差）を正確に対比し、解答記述に具体的に盛り込めているかを最重視します。数値を丸めすぎたり（例: 「66%」を単に「6割以上」や「過半数」などと書くだけで正確なパーセンテージを書かない）、具体的な数値を提示せずに「〜が多い」などと抽象的に書いている場合は、採点基準に基づき厳しく減点します。
+3. 問2については、独立変数と従属変数が明確に定義・分離して表現されているか、および「介入を伴わない（環境改善介入を伴わない、あるいは人事研修の強制やシステム導入などの実質的介入を行わない）」という調査境界条件を満たしているかを厳しく審査します。「管理職研修の強制」「雑談ツールの導入」「人事制度改定」などの介入プログラムを提案している場合は、即座に該当の減点基準（-15点）を適用してください。
+
+【今回の課題情報】
+● 回のタイトル: ${round.title}
+● 問1問題文: ${round.q1}
+● 問2問題文: ${round.q2}
+● 採点基準（減点事項）:
+${round.criteria.map(c => "  - " + c).join("\n")}
+
+【受験者の解答】
+● 問1解答:
+${q1Ans}
+
+● 問2解答:
+${q2Ans}
+
+【出力フォーマット指示】
+必ず以下のJSONフォーマットのみで出力してください。他の説明や前置き、markdownのコードブロック（\`\`\`json等）は一切含めないでください。
+
+{
+  "q1": {
+    "score": 数値（0〜50）,
+    "deductions": [
+      {
+        "criterion": "適用された採点基準のタイトル（上の採点基準一覧から正確に一致するものを選ぶ）",
+        "points": 減点された点数（正の整数。例：10）,
+        "detail": "なぜその基準が適用され、減点されたのかの具体的な指摘"
+      }
+    ],
+    "strengths": "問1解答の優れている点（具体的数値の活用などがあれば褒める）",
+    "weaknesses": "問1解答の不足している点や改善点",
+    "model_answer": "問1の完璧な模範解答（学術的かつ客観的な数値対比を徹底し、300字以内で記述されたもの）"
+  },
+  "q2": {
+    "score": 数値（0〜50）,
+    "deductions": [
+      {
+        "criterion": "適用された採点基準のタイトル（上の採点基準一覧から正確に一致するものを選ぶ）",
+        "points": 減点された点数（正の整数。例：10または15）,
+        "detail": "なぜその基準が適用され、減点されたのかの具体的な指摘"
+      }
+    ],
+    "strengths": "問2解答の優れている点（変数の定義、介入なしの整合性など）",
+    "weaknesses": "問2解答の不足している点や改善点",
+    "model_answer": "問2の完璧な模範解答（独立変数・従属変数を明記し、介入を行わない調査計画を学術的に300字以内で記述したもの）"
+  },
+  "total_score": 合計得点（0〜100の範囲。q1.score + q2.score の合計値と必ず一致させる）,,
+  "overall_evaluation": "全体的な講評と、本番試験での合格に向けた具体的なアドバイス"
+}
+`;
+
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  { text: prompt }
+                ]
+              }
+            ],
+            generationConfig: {
+              responseMimeType: "application/json"
+            }
+          })
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          const errMsg = errorData.error?.message || response.statusText;
+          throw new Error(`Gemini API Error (${response.status}): ${errMsg}`);
+        }
+
+        const data = await response.json();
+        const jsonText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        
+        if (!jsonText) {
+          throw new Error("APIから有効なテキスト応答が得られませんでした。");
+        }
+
+        // Clean JSON text (sometimes Gemini adds markdown wrapper even when responseMimeType is JSON)
+        let cleanedJson = jsonText.trim();
+        if (cleanedJson.startsWith("```")) {
+          cleanedJson = cleanedJson.replace(/^```json\s*/, '').replace(/```$/, '').trim();
+        }
+
+        const result = JSON.parse(cleanedJson);
+        renderGradingResult(result);
+        
+      } catch (err) {
+        console.error(err);
+        alert(`採点中にエラーが発生しました。\n${err.message}\nAPIキーが有効か、ネットワーク接続を確認してください。`);
+      } finally {
+        loadingOverlay.style.display = 'none';
+      }
+    }
+
+    // Render results dynamically from parsed JSON
+    function renderGradingResult(result) {
+      // 1. Renders Scores
+      totalScoreText.textContent = result.total_score || 0;
+      q1ScoreText.textContent = `${result.q1?.score || 0}/50`;
+      q2ScoreText.textContent = `${result.q2?.score || 0}/50`;
+
+      // Circular animation
+      const radius = 70;
+      const circumference = 2 * Math.PI * radius; // 439.6
+      const score = result.total_score || 0;
+      const offset = circumference - (score / 100) * circumference;
+      resultCircle.style.strokeDashoffset = offset;
+
+      // Pass/Fail check (75 is university pass threshold equivalent)
+      if (score >= 75) {
+        resultPassBadge.textContent = '判定：合格水準（合格圏内）';
+        resultPassBadge.className = 'result-badge badge-pass';
+      } else {
+        resultPassBadge.textContent = '判定：再考・要改善（合格ライン未達）';
+        resultPassBadge.className = 'result-badge badge-fail';
+      }
+
+      // 2. Render Question 1 Feedback
+      q1Strengths.textContent = result.q1?.strengths || '特になし';
+      q1Weaknesses.textContent = result.q1?.weaknesses || '特になし';
+      q1ModelAnswerText.textContent = result.q1?.model_answer || '';
+
+      // Q1 Deductions
+      q1DeductionsList.innerHTML = '';
+      if (result.q1?.deductions && result.q1.deductions.length > 0) {
+        result.q1.deductions.forEach(d => {
+          q1DeductionsList.appendChild(createDeductionElement(d));
+        });
+      } else {
+        q1DeductionsList.appendChild(createNoDeductionElement());
+      }
+
+      // 3. Render Question 2 Feedback
+      q2Strengths.textContent = result.q2?.strengths || '特になし';
+      q2Weaknesses.textContent = result.q2?.weaknesses || '特になし';
+      q2ModelAnswerText.textContent = result.q2?.model_answer || '';
+
+      // Q2 Deductions
+      q2DeductionsList.innerHTML = '';
+      if (result.q2?.deductions && result.q2.deductions.length > 0) {
+        result.q2.deductions.forEach(d => {
+          q2DeductionsList.appendChild(createDeductionElement(d));
+        });
+      } else {
+        q2DeductionsList.appendChild(createNoDeductionElement());
+      }
+
+      // 4. Render Overall Commentary
+      overallCommentary.textContent = result.overall_evaluation || '';
+
+      // 5. Scroll Smoothly to results
+      resultsPanel.style.display = 'block';
+      setTimeout(() => {
+        resultsPanel.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+
+    // Helper to create HTML elements for Deductions
+    function createDeductionElement(d) {
+      const div = document.createElement('div');
+      div.className = 'deduction-result-item';
+      div.innerHTML = `
+        <div class="deduction-info">
+          <div class="deduction-criterion">${escapeHTML(d.criterion)}</div>
+          <div class="deduction-detail">${escapeHTML(d.detail)}</div>
+        </div>
+        <div class="deduction-penalty">-${d.points}点</div>
+      `;
+      return div;
+    }
+
+    function createNoDeductionElement() {
+      const div = document.createElement('div');
+      div.className = 'no-deductions';
+      div.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>減点項目なし（満点評価）</span>
+      `;
+      return div;
+    }
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      return str.replace(/[&<>'"]/g, 
+        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+      );
+    }
+  </script>
+
+</body>
+</html>
