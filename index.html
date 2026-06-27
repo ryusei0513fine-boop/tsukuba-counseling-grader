@@ -958,6 +958,11 @@
             <p>10パターン自動採点記述トレーニング・Webシステム</p>
           </div>
         </div>
+
+        <div class="api-key-container">
+          <label class="api-key-label" for="apiKey">Gemini API Key : </label>
+          <input type="password" id="apiKey" class="api-key-input" value="AQ.Ab8RN6KfGQROXITdKNlMoR6tFaFkuoYmkXe4DDinxLKVIv_Ksw" placeholder="Google AI StudioのAPIキーを入力してください" autocomplete="current-password">
+        </div>
       </div>
 
       <!-- Selector bar -->
@@ -1663,6 +1668,7 @@
     const q2Counter = document.getElementById('q2Counter');
     const saveDraftBtn = document.getElementById('saveDraftBtn');
     const gradeBtn = document.getElementById('gradeBtn');
+    const apiKeyInput = document.getElementById('apiKey');
     const resultsPanel = document.getElementById('resultsPanel');
     const totalScoreText = document.getElementById('totalScoreText');
     const q1ScoreText = document.getElementById('q1ScoreText');
@@ -1687,6 +1693,16 @@
 
     // Initialize application
     window.addEventListener('DOMContentLoaded', () => {
+      // 2. Load API key from localstorage if available
+      let storedKey = localStorage.getItem('gemini_api_key') || '';
+      if (storedKey) {
+        apiKeyInput.value = storedKey;
+      }
+
+      apiKeyInput.addEventListener('input', () => {
+        localStorage.setItem('gemini_api_key', apiKeyInput.value.trim());
+      });
+
       // 1. Populate Selector dropdown
       dataset.forEach((round, index) => {
         const option = document.createElement('option');
@@ -1939,7 +1955,11 @@
 
     // Execution of Grading via Gemini API Call
     async function executeGrading() {
-      let apiKey = localStorage.getItem('gemini_api_key') || "AQ.Ab8RN6KfGQROXITdKNlMoR6tFaFkuoYmkXe4DDinxLKVIv_Ksw";
+      const apiKey = apiKeyInput.value.trim();
+      if (!apiKey) {
+        alert("Google AI StudioのAPIキーが設定されていません。画面右上の入力欄にキーを入力してください。");
+        return;
+      }
 
       const q1Ans = q1Input.value.trim();
       const q2Ans = q2Input.value.trim();
@@ -2066,10 +2086,7 @@ ${q2Ans}
         console.error(err);
         const errMsg = err.message || '';
         if (errMsg.includes('400') || errMsg.includes('403') || errMsg.includes('API key') || errMsg.includes('key')) {
-          const newKey = prompt(`採点中にエラーが発生しました。\n\n${err.message}\n\nAPIキーが無効である可能性があります。新しいAPIキー（AIzaSy...）を入力して上書き保存しますか？`);
-          if (newKey) {
-            localStorage.setItem('gemini_api_key', newKey.trim());
-          }
+          alert(`採点中にエラーが発生しました。\n\n${err.message}\n\n入力されたAPIキーが無効である可能性があります。画面右上の入力欄のキーを確認・修正してください。`);
         } else {
           alert(`採点中にエラーが発生しました。\n${err.message}\nネットワーク接続や設定を確認してください。`);
         }
