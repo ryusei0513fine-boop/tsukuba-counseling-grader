@@ -1939,15 +1939,7 @@
 
     // Execution of Grading via Gemini API Call
     async function executeGrading() {
-      let apiKey = localStorage.getItem('gemini_api_key');
-      if (!apiKey) {
-        apiKey = prompt("Google AI StudioのGemini APIキーを入力してください（入力されたキーはブラウザに安全に一時保存されます）：");
-        if (apiKey) {
-          localStorage.setItem('gemini_api_key', apiKey.trim());
-        } else {
-          return;
-        }
-      }
+      let apiKey = localStorage.getItem('gemini_api_key') || "AQ.Ab8RN6KfGQROXITdKNlMoR6tFaFkuoYmkXe4DDinxLKVIv_Ksw";
 
       const q1Ans = q1Input.value.trim();
       const q2Ans = q2Input.value.trim();
@@ -2071,7 +2063,15 @@ ${q2Ans}
         
       } catch (err) {
         console.error(err);
-        alert(`採点中にエラーが発生しました。\n${err.message}\nAPIキーが有効か、ネットワーク接続を確認してください。`);
+        const errMsg = err.message || '';
+        if (errMsg.includes('400') || errMsg.includes('403') || errMsg.includes('API key') || errMsg.includes('key')) {
+          const newKey = prompt(`採点中にエラーが発生しました。\n\n${err.message}\n\nAPIキーが無効である可能性があります。新しいAPIキー（AIzaSy...）を入力して上書き保存しますか？`);
+          if (newKey) {
+            localStorage.setItem('gemini_api_key', newKey.trim());
+          }
+        } else {
+          alert(`採点中にエラーが発生しました。\n${err.message}\nネットワーク接続や設定を確認してください。`);
+        }
       } finally {
         loadingOverlay.style.display = 'none';
       }
