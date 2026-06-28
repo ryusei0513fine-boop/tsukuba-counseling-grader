@@ -382,6 +382,44 @@
       color: #334155;
     }
 
+    /* Blurred question style to prevent spoiling Q1 */
+    .blurred-question {
+      filter: blur(6px);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.3s ease;
+      background: #f1f5f9;
+      padding: 12px 15px;
+      border-radius: 10px;
+      position: relative;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .blurred-question::after {
+      content: "🙈 クリックして問2の問題文を表示する";
+      position: absolute;
+      background: rgba(15, 23, 42, 0.9);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      pointer-events: none;
+      white-space: nowrap;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .revealed-question {
+      filter: none !important;
+      background: transparent !important;
+      padding: 0 !important;
+      user-select: text !important;
+    }
+    .revealed-question::after {
+      display: none !important;
+    }
+
     /* Criteria styling */
     .criteria-box {
       background: #fff5f5;
@@ -1247,7 +1285,7 @@
 
         <div class="question-box">
           <span class="question-num">問2：問題文</span>
-          <div class="question-text" id="q2Text"></div>
+          <div class="question-text blurred-question" id="q2Text"></div>
         </div>
 
       </div>
@@ -2010,6 +2048,11 @@
       // Print execution
       printBtn.addEventListener('click', executePrint);
 
+      // Reveal blurred Question 2 on user click
+      q2Text.addEventListener('click', () => {
+        q2Text.classList.add('revealed-question');
+      });
+
       // Keydown checks (Ctrl+S to save)
       document.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 's') {
@@ -2028,6 +2071,8 @@
       panelRoundTitle.textContent = round.title;
       q1Text.textContent = round.q1;
       q2Text.textContent = round.q2;
+      q2Text.classList.remove('revealed-question');
+      q2Text.classList.add('blurred-question');
 
       // Reset outputs container
       resultsPanel.style.display = 'none';
