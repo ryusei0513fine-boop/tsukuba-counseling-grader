@@ -411,9 +411,6 @@
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
       z-index: 10;
     }
-    #q2InputSection.blurred-question::after {
-      content: "🙈 クリックして問2の解答欄を表示する";
-    }
     .revealed-question {
       filter: none !important;
       background: transparent !important;
@@ -422,6 +419,10 @@
     }
     .revealed-question::after {
       display: none !important;
+    }
+    .blurred-textarea {
+      filter: blur(6px) !important;
+      cursor: pointer;
     }
 
     /* Criteria styling */
@@ -1307,12 +1308,12 @@
           <textarea id="q1Input" placeholder="図から読み取れるデータを対比させ、300字以内で論述してください。数値やパーセンテージを漏れなく記述することが重要です。"></textarea>
         </div>
 
-        <div class="input-section blurred-question" id="q2InputSection">
+        <div class="input-section">
           <div class="input-header">
             <label class="input-label" for="q2Input">問2 解答欄</label>
             <span class="counter" id="q2Counter">0 / 300字</span>
           </div>
-          <textarea id="q2Input" placeholder="特定された課題の因果関係を分析するための調査計画を、独立変数・従属変数を明示し、介入を伴わない設計で300字以内で記述してください。"></textarea>
+          <textarea id="q2Input" class="blurred-textarea" placeholder="特定された課題の因果関係を分析するための調査計画を、独立変数・従属変数を明示し、介入を伴わない設計で300字以内で記述してください。"></textarea>
         </div>
 
         <div class="button-group">
@@ -1958,7 +1959,6 @@
 
     const q1Input = document.getElementById('q1Input');
     const q2Input = document.getElementById('q2Input');
-    const q2InputSection = document.getElementById('q2InputSection');
     const q1Counter = document.getElementById('q1Counter');
     const q2Counter = document.getElementById('q2Counter');
     const saveDraftBtn = document.getElementById('saveDraftBtn');
@@ -2053,14 +2053,16 @@
       // Print execution
       printBtn.addEventListener('click', executePrint);
 
-      // Reveal blurred Question 2 and Answer 2 on clicking either
+      // Reveal blurred Question 2 and Answer 2 on focus/click/interaction
       function revealQuestion2() {
+        q2Text.classList.remove('blurred-question');
         q2Text.classList.add('revealed-question');
-        q2InputSection.classList.add('revealed-question');
+        q2Input.classList.remove('blurred-textarea');
       }
 
       q2Text.addEventListener('click', revealQuestion2);
-      q2InputSection.addEventListener('click', revealQuestion2);
+      q2Input.addEventListener('focus', revealQuestion2);
+      q2Input.addEventListener('click', revealQuestion2);
 
       // Keydown checks (Ctrl+S to save)
       document.addEventListener('keydown', (e) => {
@@ -2082,8 +2084,7 @@
       q2Text.textContent = round.q2;
       q2Text.classList.remove('revealed-question');
       q2Text.classList.add('blurred-question');
-      q2InputSection.classList.remove('revealed-question');
-      q2InputSection.classList.add('blurred-question');
+      q2Input.classList.add('blurred-textarea');
 
       // Reset outputs container
       resultsPanel.style.display = 'none';
