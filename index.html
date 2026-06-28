@@ -942,6 +942,254 @@
     .scroll-anchor {
       scroll-margin-top: 20px;
     }
+
+    /* Screen only styling (hide print area on screen) */
+    .print-only {
+      display: none;
+    }
+
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      
+      .container {
+        display: none !important;
+      }
+      
+      .print-only {
+        display: block !important;
+      }
+      
+      .print-page {
+        page-break-after: always;
+        break-after: page;
+        padding: 40px;
+        box-sizing: border-box;
+      }
+      
+      .print-page:last-child {
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+      
+      .print-header {
+        font-size: 11px;
+        color: #475569;
+        border-bottom: 2px solid #000000;
+        padding-bottom: 5px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+      }
+      
+      .print-title {
+        font-size: 22px;
+        font-weight: bold;
+        color: #000000;
+        margin-bottom: 25px;
+        text-align: center;
+      }
+      
+      .print-sheet-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: #000000;
+        margin-bottom: 20px;
+        padding-bottom: 5px;
+        border-bottom: 1px dashed #000000;
+      }
+      
+      .print-section {
+        margin-bottom: 30px;
+      }
+      
+      .print-section h2 {
+        font-size: 14px;
+        font-weight: bold;
+        color: #000000;
+        margin-bottom: 12px;
+        border-left: 4px solid #000000;
+        padding-left: 8px;
+      }
+      
+      .p-question-box {
+        border: 1px solid #000000;
+        padding: 15px;
+        font-size: 13px;
+        line-height: 1.6;
+        background: #f8fafc !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      
+      .print-charts-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .p-chart-card {
+        border: 1px solid #000000;
+        padding: 15px;
+        border-radius: 4px;
+      }
+      
+      .p-chart-title {
+        font-size: 13px;
+        font-weight: bold;
+        color: #000000;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+      }
+      
+      .p-chart-unit {
+        font-size: 11px;
+        font-weight: normal;
+      }
+      
+      .p-chart-bars {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      
+      .p-chart-row {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      
+      .p-chart-label {
+        font-size: 12px;
+        font-weight: bold;
+        color: #000000;
+      }
+      
+      .p-chart-bar-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      
+      .p-chart-bar-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      
+      .p-series-label {
+        width: 100px;
+        font-size: 11px;
+        color: #000000;
+        text-align: right;
+        font-weight: bold;
+      }
+      
+      .p-bar-outer {
+        flex-grow: 1;
+        height: 16px;
+        background: #f1f5f9 !important;
+        border: 1px solid #000000;
+        border-radius: 2px;
+        overflow: hidden;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      
+      .p-bar-inner {
+        height: 100%;
+        border-radius: 0;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      
+      .p-bar-val {
+        width: 45px;
+        font-size: 11px;
+        font-weight: bold;
+        text-align: left;
+      }
+      
+      /* Candidate boxes */
+      .exam-header-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 30px;
+        border-bottom: 2px solid #000000;
+        padding-bottom: 12px;
+      }
+      
+      .exam-title-sub {
+        font-size: 14px;
+        font-weight: bold;
+        color: #000000;
+      }
+      
+      .candidate-box {
+        display: flex;
+        align-items: center;
+        border: 2px solid #000000;
+      }
+      
+      .candidate-label {
+        font-size: 11px;
+        padding: 6px 12px;
+        background: #e2e8f0 !important;
+        border-right: 2px solid #000000;
+        font-weight: bold;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      
+      .candidate-cells {
+        display: flex;
+      }
+      
+      .candidate-cell {
+        width: 26px;
+        height: 26px;
+        border-right: 1.5px solid #000000;
+      }
+      
+      .candidate-cell:last-child {
+        border-right: none;
+      }
+      
+      /* Genko Yoshi 300-char writing grid */
+      .c-grid {
+        display: grid;
+        grid-template-columns: repeat(20, 26px) 35px;
+        grid-template-rows: repeat(15, 26px);
+        gap: 0;
+        border-top: 1.5px solid #000000;
+        border-left: 1.5px solid #000000;
+        width: fit-content;
+        margin: 40px auto;
+      }
+      
+      .c-cell {
+        border-right: 1px solid #7f8c8d;
+        border-bottom: 1px solid #7f8c8d;
+        box-sizing: border-box;
+      }
+      
+      /* Numbered row marker in grid */
+      .c-num {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        color: #000000;
+        font-family: 'Outfit', sans-serif;
+        font-weight: bold;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1030,11 +1278,15 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
             一時保存
           </button>
-          <button type="button" class="btn btn-primary" id="gradeBtn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            厳格に自動採点する
+          <button type="button" class="btn btn-secondary" id="printBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            原稿用紙を印刷
           </button>
         </div>
+        <button type="button" class="btn btn-primary" id="gradeBtn" style="margin-top: 12px; width: 100%;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          厳格に自動採点する
+        </button>
       </div>
 
       <!-- Results Panel (Full Width below) -->
@@ -1668,6 +1920,7 @@
     const q2Counter = document.getElementById('q2Counter');
     const saveDraftBtn = document.getElementById('saveDraftBtn');
     const gradeBtn = document.getElementById('gradeBtn');
+    const printBtn = document.getElementById('printBtn');
     const apiKeyInput = document.getElementById('apiKey');
     const resultsPanel = document.getElementById('resultsPanel');
     const totalScoreText = document.getElementById('totalScoreText');
@@ -1753,6 +2006,9 @@
 
       // Grade execution
       gradeBtn.addEventListener('click', executeGrading);
+
+      // Print execution
+      printBtn.addEventListener('click', executePrint);
 
       // Keydown checks (Ctrl+S to save)
       document.addEventListener('keydown', (e) => {
@@ -2101,6 +2357,133 @@ ${q2Ans}
       }
     }
 
+    // Generate print layout dynamically and trigger browser print dialog
+    function executePrint() {
+      const round = dataset[activeRoundIndex];
+      const printArea = document.getElementById('printArea');
+      
+      let html = '';
+      
+      // Page 1: Exam Question Paper
+      html += '<div class="print-page">';
+      html += '  <div class="print-header">';
+      html += '    <span>筑波大学大学院 人間総合科学学術院 カウンセリング学位プログラム対策</span>';
+      html += `    <span>演習番号: ${round.id.toUpperCase()}</span>`;
+      html += '  </div>';
+      html += `  <h1 class="print-title">記述模擬試験・問題用紙</h1>`;
+      html += `  <div style="font-size: 15px; font-weight: bold; margin-bottom: 20px; border-bottom: 1px solid #000; padding-bottom: 8px;">課題名：${round.title}</div>`;
+      
+      // Printable Charts
+      if (round.charts && round.charts.length > 0) {
+        html += '  <div class="print-section">';
+        html += '    <h2>【提示データ】</h2>';
+        html += '    <div class="print-charts-grid">';
+        
+        round.charts.forEach(chart => {
+          html += '    <div class="p-chart-card">';
+          html += `      <div class="p-chart-title">`;
+          html += `        <span>${chart.title}</span>`;
+          html += `        <span class="p-chart-unit">（単位: ${chart.unit}）</span>`;
+          html += `      </div>`;
+          html += '      <div class="p-chart-bars">';
+          
+          if (chart.type === 'bar-group') {
+            chart.labels.forEach((label, labelIdx) => {
+              html += '    <div class="p-chart-row">';
+              html += `      <div class="p-chart-label">${label}</div>`;
+              html += '      <div class="p-chart-bar-group">';
+              
+              chart.series.forEach(s => {
+                const val = s.data[labelIdx];
+                if (val === undefined) return;
+                const pct = chart.unit === '点' ? (val / 5) * 100 : val;
+                
+                html += '    <div class="p-chart-bar-container">';
+                html += `      <span class="p-series-label">${s.name}</span>`;
+                html += '      <div class="p-bar-outer">';
+                html += `        <div class="p-bar-inner" style="width: ${pct}%; background-color: ${s.color || '#4338ca'}"></div>`;
+                html += '      </div>';
+                html += `      <span class="p-bar-val">${val}${chart.unit === '%' ? '%' : ''}</span>`;
+                html += '    </div>';
+              });
+              
+              html += '      </div>';
+              html += '    </div>';
+            });
+          }
+          
+          html += '      </div>';
+          html += '    </div>';
+        });
+        
+        html += '    </div>';
+        html += '  </div>';
+      }
+      
+      // Question statements
+      html += '  <div class="print-section">';
+      html += '    <h2>【問題】</h2>';
+      html += `    <div class="p-question-box">`;
+      html += `      <strong>問1：</strong>${round.q1}<br><br>`;
+      html += `      <strong>問2：</strong>${round.q2}`;
+      html += `    </div>`;
+      html += '  </div>';
+      html += '</div>'; // End Page 1
+      
+      // Page 2: Question 1 Answer Sheet
+      html += '<div class="print-page">';
+      html += '  <div class="exam-header-meta">';
+      html += '    <div class="exam-title-sub">模擬試験 答案用紙</div>';
+      html += '    <div class="candidate-box">';
+      html += '      <div class="candidate-label">受験番号</div>';
+      html += '      <div class="candidate-cells"><div class="candidate-cell"></div><div class="candidate-cell"></div><div class="candidate-cell"></div><div class="candidate-cell"></div></div>';
+      html += '    </div>';
+      html += '  </div>';
+      html += `  <div class="print-sheet-title">記述模擬試験（${round.title}）➔ 問1 解答欄（300字以内）</div>`;
+      html += '  <div class="print-grid-container">';
+      
+      // 300 char grid (20 col x 15 row)
+      html += '    <div class="c-grid">';
+      for (let row = 0; row < 15; row++) {
+        for (let col = 0; col < 20; col++) {
+          html += '    <div class="c-cell"></div>';
+        }
+        html += `    <div class="c-num">${(row + 1) * 20}</div>`;
+      }
+      html += '    </div>';
+      
+      html += '  </div>';
+      html += '</div>'; // End Page 2
+      
+      // Page 3: Question 2 Answer Sheet
+      html += '<div class="print-page">';
+      html += '  <div class="exam-header-meta">';
+      html += '    <div class="exam-title-sub">模擬試験 答案用紙</div>';
+      html += '    <div class="candidate-box">';
+      html += '      <div class="candidate-label">受験番号</div>';
+      html += '      <div class="candidate-cells"><div class="candidate-cell"></div><div class="candidate-cell"></div><div class="candidate-cell"></div><div class="candidate-cell"></div></div>';
+      html += '    </div>';
+      html += '  </div>';
+      html += `  <div class="print-sheet-title">記述模擬試験（${round.title}）➔ 問2 解答欄（300字以内）</div>`;
+      html += '  <div class="print-grid-container">';
+      
+      // 300 char grid (20 col x 15 row)
+      html += '    <div class="c-grid">';
+      for (let row = 0; row < 15; row++) {
+        for (let col = 0; col < 20; col++) {
+          html += '    <div class="c-cell"></div>';
+        }
+        html += `    <div class="c-num">${(row + 1) * 20}</div>`;
+      }
+      html += '    </div>';
+      
+      html += '  </div>';
+      html += '</div>'; // End Page 3
+      
+      printArea.innerHTML = html;
+      window.print();
+    }
+
     // Render results dynamically from parsed JSON
     function renderGradingResult(result) {
       // 1. Renders Scores
@@ -2195,6 +2578,8 @@ ${q2Ans}
       );
     }
   </script>
+
+  <div id="printArea" class="print-only"></div>
 
 </body>
 </html>
