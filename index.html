@@ -2360,12 +2360,6 @@ ${q2Ans}
     // Generate print layout dynamically and open in a new tab for direct printing/PDF saving
     function executePrint() {
       const round = dataset[activeRoundIndex];
-      const printWindow = window.open('', '_blank');
-      if (!printWindow) {
-        alert("ポップアップがブロックされました。ブラウザのアドレスバーの右側でポップアップを許可してください。");
-        return;
-      }
-      
       let html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>模擬試験・答案用紙 - ' + round.title + '</title>';
       
       // Inject print-only stylesheet
@@ -2763,8 +2757,23 @@ ${q2Ans}
       
       html += '</body></html>';
       
-      printWindow.document.write(html);
-      printWindow.document.close();
+      try {
+        const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+        const blobUrl = URL.createObjectURL(blob);
+        const printWindow = window.open(blobUrl, '_blank');
+        if (!printWindow) {
+          alert("ポップアップがブロックされました。ブラウザのアドレスバーの右側でポップアップを許可してください。");
+        }
+      } catch (e) {
+        console.error("Blob print error", e);
+        const printWindow = window.open('', '_blank');
+        if (printWindow) {
+          printWindow.document.write(html);
+          printWindow.document.close();
+        } else {
+          alert("ポップアップがブロックされました。ブラウザのアドレスバーの右側でポップアップを許可してください。");
+        }
+      }
     }
 
     // Render results dynamically from parsed JSON
